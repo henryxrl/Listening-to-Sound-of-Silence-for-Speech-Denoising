@@ -3,7 +3,7 @@
 *.code-workspace
 # data/
 log/
-# model/
+model/
 # outputs/
 train_log/
 train_log
@@ -12,7 +12,7 @@ network_output/
 network2_output/
 ckpt_segan+/
 *.ckpt
-# *.pth
+*.pth
 *.pt
 *.cv01
 *.cv02
