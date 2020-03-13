@@ -1,10 +1,10 @@
 # Personal
 .vscode/
 *.code-workspace
-data/
+# data/
 log/
-model/
-outputs/
+# model/
+# outputs/
 train_log/
 train_log
 network_comparison_output/
@@ -12,7 +12,7 @@ network_output/
 network2_output/
 ckpt_segan+/
 *.ckpt
-*.pth
+# *.pth
 *.pt
 *.cv01
 *.cv02

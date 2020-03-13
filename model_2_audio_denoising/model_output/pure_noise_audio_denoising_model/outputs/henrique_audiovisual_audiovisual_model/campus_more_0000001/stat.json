@@ -1,0 +1,14 @@
+{
+    "id":"campus_more_0000001",
+    "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/henrique_audiovisual/campus_more/campus_more_0000001.mp4",
+    "mixed_audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_1_silent_interval_detection/model_output/audiovisual_model/outputs/henrique_audiovisual/recovered/campus_more_0000001_mixed.wav",
+    "bitstream":"000000000000111111111000000000000000000000011111100000000000000000000011111100000000000000000000000000000000000000000000000000000000000010000000000000000000111110000000000000000000000000000000000000000001111000000000000000000000011111111000000000000000000000000000000000000000000000001111111100000000000000000000011110000000000000000000000000111000000000000000000000001111000000000000000000000000000000000",
+    "sr":14000,
+    "snr":null,
+    "waveform":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/henrique_audiovisual_audiovisual_model/campus_more_0000001/waveform.png",
+    "spectrum":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/henrique_audiovisual_audiovisual_model/campus_more_0000001/spectrum.png",
+    "noisy_input":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/henrique_audiovisual_audiovisual_model/campus_more_0000001/noisy_input.wav",
+    "noise_intervals":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/henrique_audiovisual_audiovisual_model/campus_more_0000001/noise_intervals.wav",
+    "predicted_full_noise":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/henrique_audiovisual_audiovisual_model/campus_more_0000001/predicted_full_noise.wav",
+    "denoised_output":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/henrique_audiovisual_audiovisual_model/campus_more_0000001/denoised_output.wav"
+}

@@ -1,0 +1,14 @@
+{
+    "id":"cafe_less_0000001",
+    "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/henrique_audiovisual/cafe_less/cafe_less_0000001.mp4",
+    "mixed_audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_1_silent_interval_detection/model_output/audiovisual_model/outputs/henrique_audiovisual/recovered/cafe_less_0000001_mixed.wav",
+    "bitstream":"00110111100000000000000000000000011111111101000000000000001111111111111111111111111111100000000000001111111111111111111111111111111111111111111111001000001111111111111111111111111111000000000000001111111111111111100000000000000000000001111011111111111111111110000000000000000000000",
+    "sr":14000,
+    "snr":null,
+    "waveform":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/henrique_audiovisual_audiovisual_model/cafe_less_0000001/waveform.png",
+    "spectrum":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/henrique_audiovisual_audiovisual_model/cafe_less_0000001/spectrum.png",
+    "noisy_input":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/henrique_audiovisual_audiovisual_model/cafe_less_0000001/noisy_input.wav",
+    "noise_intervals":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/henrique_audiovisual_audiovisual_model/cafe_less_0000001/noise_intervals.wav",
+    "predicted_full_noise":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/henrique_audiovisual_audiovisual_model/cafe_less_0000001/predicted_full_noise.wav",
+    "denoised_output":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/henrique_audiovisual_audiovisual_model/cafe_less_0000001/denoised_output.wav"
+}

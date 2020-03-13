@@ -1,0 +1,24 @@
+{
+    "dataset_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/henrique_audiovisual/campus_more",
+    "num_videos":1,
+    "files":[
+        {
+            "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/henrique_audiovisual/campus_more/campus_more_0000001.mp4",
+            "clip_start_time":0.0,
+            "clip_end_time":13.5,
+            "face_x":0.5,
+            "face_y":0.5,
+            "framerate":30.0,
+            "audio_sample_rate":44100,
+            "audio_samples":595968,
+            "duration":13.5,
+            "num_frames":405,
+            "bit_stream":"011111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "silence_total_ratio":0.0024691358024691358,
+            "avg_silenceInterval_silcenceTotal_ratio":1.0,
+            "frames_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/henrique_audiovisual/campus_more/campus_more_0000001_faces",
+            "flows_path":null,
+            "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/henrique_audiovisual/campus_more/campus_more_0000001.wav"
+        }
+    ]
+}
