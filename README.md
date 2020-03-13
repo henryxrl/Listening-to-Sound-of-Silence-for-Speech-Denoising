@@ -1,4 +1,4 @@
-# Audiovisual Denoising
+# Audiovisual Denoising via Silent Interval Detection
 
 ## Introduction
 
