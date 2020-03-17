@@ -1,0 +1,24 @@
+{
+    "dataset_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audiovisual/korean",
+    "num_videos":1,
+    "files":[
+        {
+            "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audiovisual/korean/korean_0000001.mp4",
+            "clip_start_time":0.0,
+            "clip_end_time":8.9,
+            "face_x":0.35,
+            "face_y":0.25,
+            "framerate":30.0,
+            "audio_sample_rate":44100,
+            "audio_samples":392192,
+            "duration":8.9,
+            "num_frames":267,
+            "bit_stream":"011111111111111111111111111111111111111111111111111111111111111111111111110111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111110",
+            "silence_total_ratio":0.011235955056179775,
+            "avg_silenceInterval_silcenceTotal_ratio":0.3333333333333333,
+            "frames_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audiovisual/korean/korean_0000001_faces",
+            "flows_path":null,
+            "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audiovisual/korean/korean_0000001.wav"
+        }
+    ]
+}

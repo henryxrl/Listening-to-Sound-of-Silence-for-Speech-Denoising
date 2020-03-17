@@ -31,12 +31,13 @@ BIT_STREAM_LABEL = 'recovered_prediction'
 # BIT_STREAM_LABEL = 'bit_stream' # test ground true labeling on denoise effect
 GT_BIT_STREAM_LABEL = 'bit_stream'
 
-# FIRST_MODEL_EXP_NAME = 'audioonly_model'
-FIRST_MODEL_EXP_NAME = 'audiovisual_model'
+FIRST_MODEL_EXP_NAME = 'audioonly_model'
+# FIRST_MODEL_EXP_NAME = 'audiovisual_model'
 FIRST_MODEL_OUTPUT_ROOT = os.path.join(PROJECT_ROOT, "../model_1_silent_interval_detection/model_output", FIRST_MODEL_EXP_NAME, "outputs")
 
 # UNKNOWN_CLEAN_SIGNAL_NAME = 'henrique_audioonly'
-UNKNOWN_CLEAN_SIGNAL_NAME = 'henrique_audiovisual'
+# UNKNOWN_CLEAN_SIGNAL_NAME = 'henrique_audiovisual'
+UNKNOWN_CLEAN_SIGNAL_NAME = 'languages_audioonly'
 UNKNOWN_CLEAN_SIGNAL_FIRST_MODEL_OUTPUT_ROOT = os.path.join(FIRST_MODEL_OUTPUT_ROOT, UNKNOWN_CLEAN_SIGNAL_NAME)
 
 EXPERIMENT_PREDICTION_OUTPUT_DIR = os.path.join(EXPERIMENT_DIR, 'outputs', FIRST_MODEL_EXP_NAME)

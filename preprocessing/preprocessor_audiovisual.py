@@ -157,8 +157,14 @@ def build_json_better(download_dataset_dir, download_dataset_csv, output_json, p
 
 
 if __name__ == "__main__":
-    HENRIQUE_DIR = os.path.join(DATA_ROOT, 'henrique_audiovisual')
-    HENRIQUE_CSV = os.path.join(HENRIQUE_DIR, 'henrique.csv')
-    HENRIQUE_JSON = os.path.join(DATA_ROOT, 'henrique_audiovisual.json')
+    # HENRIQUE_DIR = os.path.join(DATA_ROOT, 'henrique_audiovisual')
+    # HENRIQUE_CSV = os.path.join(HENRIQUE_DIR, 'henrique.csv')
+    # HENRIQUE_JSON = os.path.join(DATA_ROOT, 'henrique_audiovisual.json')
 
-    build_json_better(HENRIQUE_DIR, HENRIQUE_CSV, HENRIQUE_JSON)
+    # build_json_better(HENRIQUE_DIR, HENRIQUE_CSV, HENRIQUE_JSON)
+
+    LANGUAGES_DIR = os.path.join(DATA_ROOT, 'languages_audiovisual')
+    LANGUAGES_CSV = os.path.join(LANGUAGES_DIR, 'languages.csv')
+    LANGUAGES_JSON = os.path.join(DATA_ROOT, 'languages_audiovisual.json')
+
+    build_json_better(LANGUAGES_DIR, LANGUAGES_CSV, LANGUAGES_JSON)
