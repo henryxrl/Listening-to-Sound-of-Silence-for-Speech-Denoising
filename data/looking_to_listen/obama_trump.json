@@ -1,0 +1,24 @@
+{
+    "dataset_path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/obama_trump",
+    "num_videos":1,
+    "files":[
+        {
+            "path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/obama_trump/obama_trump_0000001.mp4",
+            "clip_start_time":0.0,
+            "clip_end_time":10.133984,
+            "face_x":0.43304,
+            "face_y":0.45238,
+            "framerate":30.0,
+            "audio_sample_rate":44100,
+            "audio_samples":446464,
+            "duration":10.133984,
+            "num_frames":304,
+            "bit_stream":"0001111111110011111111111111110001111111111111111011111111111111100011111011110000000000001111110011101001111111111111111111111111111111111111111111111111111111111111111111111111111111110000011111111111110000000001111111111111111111111111111111111111111100001110001111100111111110000011100000000000011110",
+            "silence_total_ratio":0.23355263157894737,
+            "avg_silenceInterval_silcenceTotal_ratio":0.05555555555555556,
+            "frames_path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/obama_trump/obama_trump_0000001_faces",
+            "flows_path":null,
+            "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/obama_trump/obama_trump_0000001.wav"
+        }
+    ]
+}

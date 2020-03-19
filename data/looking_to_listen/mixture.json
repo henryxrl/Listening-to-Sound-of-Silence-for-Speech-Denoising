@@ -1,0 +1,24 @@
+{
+    "dataset_path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/mixture",
+    "num_videos":1,
+    "files":[
+        {
+            "path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/mixture/mixture_0000001.mp4",
+            "clip_start_time":0.0,
+            "clip_end_time":5.666992,
+            "face_x":0.5,
+            "face_y":0.5,
+            "framerate":30.0,
+            "audio_sample_rate":44100,
+            "audio_samples":251194,
+            "duration":5.666992,
+            "num_frames":170,
+            "bit_stream":"00000000000000000000000000000000001111111111101111101111111111111000011111111111111110011010111111111111000000000111111100000111111111000000111000111111111110000000000000",
+            "silence_total_ratio":0.47058823529411764,
+            "avg_silenceInterval_silcenceTotal_ratio":0.08333333333333334,
+            "frames_path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/mixture/mixture_0000001_faces",
+            "flows_path":null,
+            "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/mixture/mixture_0000001.wav"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "id":"bill_freeman_0000001",
+    "path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/bill_freeman/bill_freeman_0000001.mp4",
+    "mixed_audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_1_silent_interval_detection/model_output/audioonly_model/outputs/looking_to_listen/recovered/bill_freeman_0000001_mixed.wav",
+    "bitstream":"00111111111000000000000111111111111111000000000000000000000000000000000000000000000000011111111111111111110000000000011111111111111111111111111111111111011111100000000000000000111111111000000000000000000000001111111111111111100111111111111000000000000000000000000000000000011111111111111111111111111100111000001110000000000000000000000000000000000",
+    "sr":14000,
+    "snr":null,
+    "waveform":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/looking_to_listen_audioonly_model/bill_freeman_0000001/waveform.png",
+    "spectrum":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/looking_to_listen_audioonly_model/bill_freeman_0000001/spectrum.png",
+    "noisy_input":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/looking_to_listen_audioonly_model/bill_freeman_0000001/noisy_input.wav",
+    "noise_intervals":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/looking_to_listen_audioonly_model/bill_freeman_0000001/noise_intervals.wav",
+    "predicted_full_noise":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/looking_to_listen_audioonly_model/bill_freeman_0000001/predicted_full_noise.wav",
+    "denoised_output":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/looking_to_listen_audioonly_model/bill_freeman_0000001/denoised_output.wav"
+}

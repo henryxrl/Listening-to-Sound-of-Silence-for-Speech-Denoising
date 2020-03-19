@@ -1,0 +1,14 @@
+{
+    "id":"sp01_008_0000001",
+    "path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/sp01_008/sp01_008_0000001.mp4",
+    "mixed_audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_1_silent_interval_detection/model_output/audioonly_model/outputs/looking_to_listen/recovered/sp01_008_0000001_mixed.wav",
+    "bitstream":"111111111111111111111111111111111111111111111111111111111111111111011111111111111111011111111111111111111111111111111111111111",
+    "sr":14000,
+    "snr":null,
+    "waveform":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/looking_to_listen_audioonly_model/sp01_008_0000001/waveform.png",
+    "spectrum":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/looking_to_listen_audioonly_model/sp01_008_0000001/spectrum.png",
+    "noisy_input":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/looking_to_listen_audioonly_model/sp01_008_0000001/noisy_input.wav",
+    "noise_intervals":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/looking_to_listen_audioonly_model/sp01_008_0000001/noise_intervals.wav",
+    "predicted_full_noise":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/looking_to_listen_audioonly_model/sp01_008_0000001/predicted_full_noise.wav",
+    "denoised_output":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/looking_to_listen_audioonly_model/sp01_008_0000001/denoised_output.wav"
+}

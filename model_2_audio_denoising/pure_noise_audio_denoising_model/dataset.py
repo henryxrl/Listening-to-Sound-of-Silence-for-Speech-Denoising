@@ -33,6 +33,9 @@ DATA_REQUIRED_SR = 14000
 NOISE_SRC_ROOT_TRAIN = os.path.join(DATA_ROOT, "noise_data_DEMAND", "train_noise")
 NOISE_SRC_ROOT_TEST = os.path.join(DATA_ROOT, "noise_data_DEMAND", "test_noise")
 
+AUDIOSET_NOISE_SRC_TRAIN = os.path.join(DATA_ROOT, "audioset_noises_balanced_train")
+AUDIOSET_NOISE_SRC_EVAL = os.path.join(DATA_ROOT, "audioset_noises_balanced_eval")
+
 # Functions
 ##############################################################################
 def get_dataloader(phase, batch_size=4, num_workers=4, snr_idx=None):
@@ -74,9 +77,11 @@ class AudioDataset(Dataset):
         # self.items = info[phase]
 
         print('Getting all noise files...')
-        self.noise_src = [f.resolve() for f in Path(NOISE_SRC_ROOT_TRAIN).rglob('*.wav')]
+        self.noise_src = [f.resolve() for f in Path(NOISE_SRC_ROOT_TRAIN).rglob('*.wav')]\
+            + [f.resolve() for f in Path(AUDIOSET_NOISE_SRC_TRAIN).rglob('*.wav')]
         if phase != PHASE_TRAINING:
-            self.noise_src = [f.resolve() for f in Path(NOISE_SRC_ROOT_TEST).rglob('*.wav')]
+            self.noise_src = [f.resolve() for f in Path(NOISE_SRC_ROOT_TEST).rglob('*.wav')]\
+                + [f.resolve() for f in Path(AUDIOSET_NOISE_SRC_EVAL).rglob('*.wav')]
         # print(len(self.noise_src))
 
         # self.snrs = [0, 5, 10, 15]

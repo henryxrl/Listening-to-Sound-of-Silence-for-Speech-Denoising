@@ -1,0 +1,24 @@
+{
+    "dataset_path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/car",
+    "num_videos":1,
+    "files":[
+        {
+            "path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/car/car_0000001.mp4",
+            "clip_start_time":0.0,
+            "clip_end_time":7.766992,
+            "face_x":0.80808,
+            "face_y":0.41916000000000003,
+            "framerate":30.0,
+            "audio_sample_rate":44100,
+            "audio_samples":345088,
+            "duration":7.766992,
+            "num_frames":233,
+            "bit_stream":"00111111111111111111111111111111111111110001111111111111111111111001111111111111111111111111111000111111111001111111111110111111111111111111111111111110001111111111111111111111111111111111111111111111111111111111100011111111100011111",
+            "silence_total_ratio":0.0944206008583691,
+            "avg_silenceInterval_silcenceTotal_ratio":0.11111111111111112,
+            "frames_path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/car/car_0000001_faces",
+            "flows_path":null,
+            "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising/data/looking_to_listen/car/car_0000001.wav"
+        }
+    ]
+}

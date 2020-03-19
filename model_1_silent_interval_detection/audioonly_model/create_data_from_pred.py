@@ -20,7 +20,7 @@ from sklearn.metrics import auc
 from dataset import CLIP_FRAMES, SILENT_CONSECUTIVE_FRAMES, DATA_REQUIRED_SR
 from utils import print_dictionary, find_common_path, ensure_dir
 from tools import *
-from predict import EXPERIMENT_PREDICTION_OUTPUT_DIR, HENRIQUE_JSON, LANGUAGES_JSON
+from predict import EXPERIMENT_PREDICTION_OUTPUT_DIR, HENRIQUE_JSON, LANGUAGES_JSON, LOOKING_TO_LISTEN_JSON
 
 
 def create_data_from_prediction(input_json, output_json=None):
@@ -931,7 +931,7 @@ if __name__ == "__main__":
         create_data_from_prediction_newtarget_bceloss_no_voting(os.path.join(EXPERIMENT_PREDICTION_OUTPUT_DIR, input_json),\
             suffix=suffix, noise_snr=args.snr, overwrite=True, save_results=args.save_results, save_extra=args.save_extra)
     else:
-        create_data_from_prediction_newtarget_bceloss_no_voting(os.path.join(EXPERIMENT_PREDICTION_OUTPUT_DIR, os.path.basename(LANGUAGES_JSON).split('.json')[0], input_json),\
+        create_data_from_prediction_newtarget_bceloss_no_voting(os.path.join(EXPERIMENT_PREDICTION_OUTPUT_DIR, os.path.basename(LOOKING_TO_LISTEN_JSON).split('.json')[0], input_json),\
             suffix=suffix, noise_snr=args.snr, overwrite=True, save_results=args.save_results, save_extra=args.save_extra, clean_audio=False)
 
     # python3 create_data_from_pred.py --unknown_clean_signal true

@@ -241,7 +241,10 @@ def add_signals(signal, noises, snr, norm=0.5):
             ret_signal += new_noise
         else:
             ratio = np.sqrt(power_of_signal(noise)) / np.sqrt(pn)
-            new_noise = noise / ratio
+            if ratio == 0:
+                new_noise = noise
+            else:
+                new_noise = noise / ratio
             new_noises.append(new_noise)
             ret_signal += new_noise
             # print('ratio:', ratio)
@@ -260,7 +263,10 @@ def add_signals(signal, noises, snr, norm=0.5):
     if norm:
         # print('normalize')
         scale = np.max(np.abs(ret_signal)) / norm
-        return ret_signal / scale, signal / scale, [x / scale for x in new_noises]
+        if scale != 0:
+            return ret_signal / scale, signal / scale, [x / scale for x in new_noises]
+        else:
+            return ret_signal, signal, new_noises
     else:
         # print('dont normalize')
         return ret_signal, signal, new_noises
@@ -269,7 +275,14 @@ def add_signals(signal, noises, snr, norm=0.5):
 def add_noise_to_audio(audio, noise, snr, start_pos=None, norm=None):
     # randomly load noise and randomly select an interval
     if start_pos is None:
-        start = random.randint(0, len(noise) - len(audio))
+        if len(noise) - len(audio) >= 1:
+            start = random.randint(0, len(noise) - len(audio))
+        elif len(noise) - len(audio) == 0:
+            start = 0
+        else:
+            print('len(noise):', len(noise))
+            print('len(audio):', len(audio))
+            raise ValueError
         noise_cropped = noise[start:start+len(audio)]
     else:
         noise_cropped = noise[start_pos:start_pos+len(audio)]

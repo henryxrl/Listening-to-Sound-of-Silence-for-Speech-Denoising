@@ -32,6 +32,7 @@ EXPERIMENT_PREDICTION_OUTPUT_DIR = os.path.join(EXPERIMENT_DIR, 'outputs')
 
 HENRIQUE_JSON = os.path.join(DATA_ROOT, 'henrique_audioonly.json')
 LANGUAGES_JSON = os.path.join(DATA_ROOT, 'languages_audioonly.json')
+LOOKING_TO_LISTEN_JSON = os.path.join(DATA_ROOT, 'looking_to_listen.json')
 
 
 def prepare_audio_data(args):
@@ -531,7 +532,7 @@ def main():
             # audio_data_json_path = prepare_audio_data(args)
             evaluate(args, save_individual_results=args.save_results, save_noise_info=True, save_stat=True, clean_audio=True)
         else:
-            evaluate(args, save_individual_results=args.save_results, save_noise_info=True, save_stat=True, dataset_json=LANGUAGES_JSON, clean_audio=False)
+            evaluate(args, save_individual_results=args.save_results, save_noise_info=True, save_stat=True, dataset_json=LOOKING_TO_LISTEN_JSON, clean_audio=False)
 
 
 if __name__ == '__main__':
