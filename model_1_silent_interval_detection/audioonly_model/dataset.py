@@ -44,6 +44,9 @@ SNRS = [-10, -7, -3, 0, 3, 7, 10]
 NOISE_SRC_ROOT_TRAIN = os.path.join(DATA_ROOT, "noise_data_DEMAND", "train_noise")
 NOISE_SRC_ROOT_TEST = os.path.join(DATA_ROOT, "noise_data_DEMAND", "test_noise")
 
+AUDIOSET_NOISE_SRC_TRAIN = os.path.join(DATA_ROOT, "audioset_noises_balanced_train")
+AUDIOSET_NOISE_SRC_EVAL = os.path.join(DATA_ROOT, "audioset_noises_balanced_eval")
+
 
 # Functions
 ##############################################################################
@@ -105,11 +108,14 @@ class AudioVisualAVSpeechMultipleVideoDataset(Dataset):
             # self.sr = 14000
             # self.fps = 30.0
             # self.max_audio_samples = int(math.floor(self.clip_frames / self.fps * self.sr))
-            self.noise_src = [f.resolve() for f in Path(NOISE_SRC_ROOT_TRAIN).rglob('*.wav')]
+            self.noise_src = [f.resolve() for f in Path(NOISE_SRC_ROOT_TRAIN).rglob('*.wav')]\
+                + [f.resolve() for f in Path(AUDIOSET_NOISE_SRC_TRAIN).rglob('*.wav')]
             if phase != PHASE_TRAINING:
-                self.noise_src = [f.resolve() for f in Path(NOISE_SRC_ROOT_TEST).rglob('*.wav')]
+                self.noise_src = [f.resolve() for f in Path(NOISE_SRC_ROOT_TEST).rglob('*.wav')]\
+                    + [f.resolve() for f in Path(AUDIOSET_NOISE_SRC_EVAL).rglob('*.wav')]
             # elif phase == PHASE_PREDICTION:
-            #     self.noise_src = sorted([f.resolve() for f in Path(get_parent_dir(self.dataset_json)).rglob('*_noise.wav')])
+            #     self.noise_src = [f.resolve() for f in Path(NOISE_SRC_ROOT_TEST).rglob('*.wav')]
+                # self.noise_src = sorted([f.resolve() for f in Path(get_parent_dir(self.dataset_json)).rglob('*_noise.wav')])
             # print(len(self.noise_src))
             # print(self.noise_src)
 
@@ -121,6 +127,7 @@ class AudioVisualAVSpeechMultipleVideoDataset(Dataset):
                 random.seed(PRED_RANDOM_SEED)
                 for f_idx, file in enumerate(self.files):
                     selected_noise = random.choice(self.noises)
+                    # selected_noise = random_select_noises_for_pred(file, self.noises)
                     # selected_noise = self.noises[f_idx]
                     # print(os.path.basename(self.noise_src[f_idx]))
                     # print(os.path.basename(file['path']))

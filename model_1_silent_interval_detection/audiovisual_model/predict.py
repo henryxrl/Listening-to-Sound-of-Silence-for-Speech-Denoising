@@ -529,4 +529,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=0,1 python3 predict.py --save_results false --unknown_clean_signal true
+    # CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=0,1 python3 predict.py --ckpt 82 --save_results false --unknown_clean_signal true

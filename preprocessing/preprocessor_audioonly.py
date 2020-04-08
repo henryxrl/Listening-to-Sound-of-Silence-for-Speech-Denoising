@@ -163,11 +163,14 @@ if __name__ == "__main__":
     # HENRIQUE_DIR = os.path.join(DATA_ROOT, 'henrique_audioonly')
     # HENRIQUE_CSV = os.path.join(HENRIQUE_DIR, 'henrique.csv')
     # HENRIQUE_JSON = os.path.join(DATA_ROOT, 'henrique_audioonly.json')
-
     # build_json_better(HENRIQUE_DIR, HENRIQUE_CSV, HENRIQUE_JSON)
 
-    LANGUAGES_DIR = os.path.join(DATA_ROOT, 'languages_audioonly')
-    LANGUAGES_CSV = os.path.join(LANGUAGES_DIR, 'languages.csv')
-    LANGUAGES_JSON = os.path.join(DATA_ROOT, 'languages_audioonly.json')
+    # LANGUAGES_DIR = os.path.join(DATA_ROOT, 'languages_audioonly')
+    # LANGUAGES_CSV = os.path.join(LANGUAGES_DIR, 'languages.csv')
+    # LANGUAGES_JSON = os.path.join(DATA_ROOT, 'languages_audioonly.json')
+    # build_json_better(LANGUAGES_DIR, LANGUAGES_CSV, LANGUAGES_JSON)
 
-    build_json_better(LANGUAGES_DIR, LANGUAGES_CSV, LANGUAGES_JSON)
+    CE_DIR = os.path.join(DATA_ROOT, 'counterexamples_audioonly')
+    CE_CSV = os.path.join(CE_DIR, 'counterexamples.csv')
+    CE_JSON = os.path.join(DATA_ROOT, 'counterexamples_audioonly.json')
+    build_json_better(CE_DIR, CE_CSV, CE_JSON)

@@ -1,0 +1,14 @@
+{
+    "id":"street_interview_0000001",
+    "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/counterexamples_audioonly/street_interview/street_interview_0000001.wav",
+    "mixed_audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_1_silent_interval_detection/model_output/audioonly_model/outputs/counterexamples_audioonly/recovered/street_interview_0000001.wav_mixed.wav",
+    "bitstream":"0111111111111111111111110000000111111011111111111110111111111111100000000000000000000000000000000000111111111111111111100000000000111111111111111111011111111111111111111111100000000000000000000000000000000000000000001111111111111111111100001100011001111111111111111111111111101111100000000011111011111111111111000000000100000011111111111100000000000000000001111111111111111111111110000000000000000001110001100111111111111111111111111111111111111111111111111111000000000000000111101111111001",
+    "sr":14000,
+    "snr":null,
+    "waveform":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/counterexamples_audioonly_audioonly_model/street_interview_0000001/waveform.png",
+    "spectrum":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/counterexamples_audioonly_audioonly_model/street_interview_0000001/spectrum.png",
+    "noisy_input":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/counterexamples_audioonly_audioonly_model/street_interview_0000001/noisy_input.wav",
+    "noise_intervals":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/counterexamples_audioonly_audioonly_model/street_interview_0000001/noise_intervals.wav",
+    "predicted_full_noise":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/counterexamples_audioonly_audioonly_model/street_interview_0000001/predicted_full_noise.wav",
+    "denoised_output":"/proj/vondrick/rx2132/audio_visual_denoising_official/model_2_audio_denoising/model_output/pure_noise_audio_denoising_model/outputs/counterexamples_audioonly_audioonly_model/street_interview_0000001/denoised_output.wav"
+}

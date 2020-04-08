@@ -1060,3 +1060,23 @@ def random_select_data_as_noise_for_pred(cur_file, all_files, random_seed=None):
     # print("--- %s seconds in randselect ---" % (time.time() - start_time))
     # print('safe_len:', safe_len)
     return results
+
+
+def random_select_noises_for_pred(cur_file, noises, random_seed=None):
+    results = []
+    # start_time = time.time()
+    # random.seed(random_seed)
+    # print(type(noises))
+    # print(len(noises))
+    chosen = random.choice(noises)
+    # i = np.random.randint(0, len(noises))  # faster?
+    # chosen = noises[i]
+
+    remaining_duration = cur_file['audio_samples'] - len(chosen)
+    while remaining_duration > -1:  # just to be safe
+        chosen = random.choice(noises)
+        results.append(chosen)
+        remaining_duration = remaining_duration - len(chosen)
+    # print("--- %s seconds in randselect ---" % (time.time() - start_time))
+
+    return np.hstack(results)
