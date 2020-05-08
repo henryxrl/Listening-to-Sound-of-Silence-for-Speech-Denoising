@@ -10,18 +10,24 @@ from scipy.interpolate import interp1d
 from scipy.linalg import toeplitz
 from pypesq import pesq
 from pystoi.stoi import stoi
+from itertools import groupby
 
 
-def evaluate_metrics(noisy, clean, sr=16000):
-    csig, cbak, covl, pesq, ssnr = CompositeEval(clean, noisy, sr)
+def evaluate_metrics(noisy, clean, sr=16000, eps=1e-20):
+    csig, cbak, covl, pesq_raw, ssnr, overall_snr = CompositeEval(clean, noisy, sr, eps=eps)
     metrics = OrderedDict()
     metrics['l1'] = metrics_L1(noisy, clean)
     metrics['stoi'] = metrics_stoi(noisy, clean, sr)
     metrics['csig'] = csig
     metrics['cbak'] = cbak
     metrics['covl'] = covl
-    metrics['pesq'] = pesq
-    metrics['ssnr'] = ssnr
+    metrics['pesq'] = pesq_raw
+    metrics['ssnr_regular'] = metrics_ssnr(clean, noisy, srate=sr, eps=eps)[1]
+    metrics['ssnr_shift'] = metrics_ssnr_shift(clean, noisy, srate=sr, eps=eps)[1]
+    # metrics['ssnr_clip'] = metrics_ssnr(clean, noisy, srate=sr, min_snr=0, eps=eps)[1]
+    metrics['ssnr_clip'] = ssnr
+    metrics['ssnr_exsi'] = metrics_ssnr_exclude_silence(clean, noisy, srate=sr, eps=eps)[1]
+    metrics['overall_snr'] = overall_snr
     # print(metrics)
     return metrics
 
@@ -57,12 +63,12 @@ def metrics_pesq_obsolete(ref_wav, deg_wav):
     #    ref_wav = np.array(denormalize_wave_minmax(ref_wav), dtype=np.int16)
     #if deg_wav.max() <= 1:
     #    deg_wav = np.array(denormalize_wave_minmax(deg_wav), dtype=np.int16)
-	
+
     #wavfile.write(ref_tfl, 16000, ref_wav)
     #wavfile.write(deg_tfl, 16000, deg_wav)
     sf.write(ref_tfl, ref_wav, 16000, subtype='PCM_16')
     sf.write(deg_tfl, deg_wav, 16000, subtype='PCM_16')
-    
+
     curr_dir = os.getcwd()
     # Write both to tmp files and then eval with pesqmain
     try:
@@ -77,7 +83,7 @@ def metrics_pesq_obsolete(ref_wav, deg_wav):
         print('pesqmain not found! Please add it your PATH')
 
 
-def metrics_ssnr(ref_wav, deg_wav, srate=16000, eps=1e-10):
+def metrics_ssnr(ref_wav, deg_wav, srate=16000, win_len=30, min_snr=-10, max_snr=35, eps=1e-10):
     """ Segmental Signal-to-Noise Ratio Objective Speech Quality Measure
         This function implements the segmental signal-to-noise ratio
         as defined in [1, p. 45] (see Equation 2.12).
@@ -87,17 +93,15 @@ def metrics_ssnr(ref_wav, deg_wav, srate=16000, eps=1e-10):
     clean_length = ref_wav.shape[0]
     processed_length = deg_wav.shape[0]
 
-    
     # scale both to have same dynamic range. Remove DC too.
     dif = ref_wav - deg_wav
-    overall_snr = 10 * np.log10(np.sum(ref_wav ** 2) / (np.sum(dif ** 2) +
-                                                        10e-20))
+    overall_snr = 10 * np.log10(np.sum(ref_wav ** 2) / (np.sum(dif ** 2) + eps))
 
     # global variables
-    winlength = int(np.round(30 * srate / 1000)) # 30 msecs
+    winlength = int(np.round(win_len * srate / 1000)) # 30 msecs
     skiprate = winlength // 4
-    MIN_SNR = -10
-    MAX_SNR = 35
+    # MIN_SNR = -10
+    # MAX_SNR = 35
 
     # For each frame, calculate SSNR
 
@@ -118,14 +122,195 @@ def metrics_ssnr(ref_wav, deg_wav, srate=16000, eps=1e-10):
         # (2) Compute Segmental SNR
         signal_energy = np.sum(clean_frame ** 2)
         noise_energy = np.sum((clean_frame - processed_frame) ** 2)
-        segmental_snr.append(10 * np.log10(signal_energy / (noise_energy + eps)+ eps))
-        segmental_snr[-1] = max(segmental_snr[-1], MIN_SNR)
-        segmental_snr[-1] = min(segmental_snr[-1], MAX_SNR)
+        segmental_snr.append(10 * np.log10(signal_energy / (noise_energy + eps) + eps))
+        segmental_snr[-1] = max(segmental_snr[-1], min_snr)
+        segmental_snr[-1] = min(segmental_snr[-1], max_snr)
         start += int(skiprate)
-    return overall_snr, segmental_snr
+    return np.nanmean(overall_snr), np.nanmean(segmental_snr)
 
 
-def metrics_ssnr_obsolete(output, target, sr=16000, frame_len=20):
+def metrics_ssnr_shift(ref_wav, deg_wav, srate=16000, win_len=30, min_snr=-10, max_snr=35, eps=1e-10):
+    """ Segmental Signal-to-Noise Ratio Objective Speech Quality Measure
+        This function implements the segmental signal-to-noise ratio
+        as defined in [1, p. 45] (see Equation 2.12).
+    """
+    clean_speech = ref_wav
+    processed_speech = deg_wav
+    clean_length = ref_wav.shape[0]
+    processed_length = deg_wav.shape[0]
+
+    # scale both to have same dynamic range. Remove DC too.
+    dif = ref_wav - deg_wav
+    overall_snr = 10 * np.log10(np.sum(ref_wav ** 2) / (np.sum(dif ** 2) + eps))
+
+    # global variables
+    winlength = int(np.round(win_len * srate / 1000)) # 30 msecs
+    skiprate = winlength // 4
+    # MIN_SNR = -10
+    # MAX_SNR = 35
+
+    # For each frame, calculate SSNR
+
+    num_frames = int(clean_length / skiprate - (winlength/skiprate))
+    start = 0
+    time = np.linspace(1, winlength, winlength) / (winlength + 1)
+    window = 0.5 * (1 - np.cos(2 * np.pi * time))
+    segmental_snr = []
+
+    for frame_count in range(int(num_frames)):
+        # (1) get the frames for the test and ref speech.
+        # Apply Hanning Window
+        clean_frame = clean_speech[start:start+winlength]
+        processed_frame = processed_speech[start:start+winlength]
+        clean_frame = clean_frame * window
+        processed_frame = processed_frame * window
+
+        # (2) Compute Segmental SNR
+        signal_energy = np.sum(clean_frame ** 2)
+        noise_energy = np.sum((clean_frame - processed_frame) ** 2)
+        segmental_snr.append(10 * np.log10(signal_energy / (noise_energy + eps) + 1))
+        segmental_snr[-1] = max(segmental_snr[-1], min_snr)
+        segmental_snr[-1] = min(segmental_snr[-1], max_snr)
+        start += int(skiprate)
+    return np.nanmean(overall_snr), np.nanmean(segmental_snr)
+
+
+def metrics_ssnr_exclude_silence(ref_wav, deg_wav, srate=16000, win_len=30, min_snr=-10, max_snr=35, eps=1e-10):
+    """ Segmental Signal-to-Noise Ratio Objective Speech Quality Measure
+        This function implements the segmental signal-to-noise ratio
+        as defined in [1, p. 45] (see Equation 2.12).
+    """
+    clean_speech = ref_wav
+    processed_speech = deg_wav
+    clean_length = ref_wav.shape[0]
+    processed_length = deg_wav.shape[0]
+    assert clean_length == processed_length
+    # print('original length:', clean_length)
+
+    # mask out silence
+    new_clean_speech = []
+    new_processed_speech = []
+    start_idx = 0
+    # for item in ((k, len(list(g))) for k, g in groupby(np.where(clean_speech == 0, 0, 1))):
+    for item in ((k, len(list(g))) for k, g in groupby(np.where(np.abs(clean_speech) < np.max(np.abs(clean_speech))*0.03, 0, 1))):
+        if item[0] == 1:
+            # print(clean_speech[start_idx:start_idx+item[1]])
+            new_clean_speech.append(clean_speech[start_idx:start_idx+item[1]])
+            new_processed_speech.append(processed_speech[start_idx:start_idx+item[1]])
+        start_idx += item[1]
+    new_clean_speech = np.concatenate(new_clean_speech)
+    new_processed_speech = np.concatenate(new_processed_speech)
+    new_clean_length = new_clean_speech.shape[0]
+    new_processed_length = new_processed_speech.shape[0]
+    assert new_clean_length == new_processed_length
+    # print('new length:', new_clean_length)
+    # print(np.where(new_clean_speech == 0)[0])     # should return an empty array
+
+    # scale both to have same dynamic range. Remove DC too.
+    dif = ref_wav - deg_wav
+    overall_snr = 10 * np.log10(np.sum(ref_wav ** 2) / (np.sum(dif ** 2) + eps))
+
+    # global variables
+    winlength = int(np.round(win_len * srate / 1000)) # 30 msecs
+    skiprate = winlength // 4
+    # MIN_SNR = -10
+    # MAX_SNR = 35
+
+    # For each frame, calculate SSNR
+
+    num_frames = int(new_clean_length / skiprate - (winlength/skiprate))
+    start = 0
+    time = np.linspace(1, winlength, winlength) / (winlength + 1)
+    window = 0.5 * (1 - np.cos(2 * np.pi * time))
+    segmental_snr = []
+
+    for frame_count in range(int(num_frames)):
+        # (1) get the frames for the test and ref speech.
+        # Apply Hanning Window
+        clean_frame = new_clean_speech[start:start+winlength]
+        processed_frame = new_processed_speech[start:start+winlength]
+        clean_frame = clean_frame * window
+        processed_frame = processed_frame * window
+
+        # (2) Compute Segmental SNR
+        signal_energy = np.sum(clean_frame ** 2)
+        noise_energy = np.sum((clean_frame - processed_frame) ** 2)
+        segmental_snr.append(10 * np.log10(signal_energy / (noise_energy + eps) + eps))
+        segmental_snr[-1] = max(segmental_snr[-1], min_snr)
+        segmental_snr[-1] = min(segmental_snr[-1], max_snr)
+        start += int(skiprate)
+    # return np.nanmean(overall_snr), np.nanmean(segmental_snr)
+    return np.nanmean(overall_snr), np.nanmean(segmental_snr)
+
+
+def metrics_ssnr_exclude_silence_shift(ref_wav, deg_wav, srate=16000, win_len=30, min_snr=-10, max_snr=35, eps=1e-10):
+    """ Segmental Signal-to-Noise Ratio Objective Speech Quality Measure
+        This function implements the segmental signal-to-noise ratio
+        as defined in [1, p. 45] (see Equation 2.12).
+    """
+    clean_speech = ref_wav
+    processed_speech = deg_wav
+    clean_length = ref_wav.shape[0]
+    processed_length = deg_wav.shape[0]
+    assert clean_length == processed_length
+    # print('original length:', clean_length)
+
+    # mask out silence
+    new_clean_speech = []
+    new_processed_speech = []
+    start_idx = 0
+    # for item in ((k, len(list(g))) for k, g in groupby(np.where(clean_speech == 0, 0, 1))):
+    for item in ((k, len(list(g))) for k, g in groupby(np.where(np.abs(clean_speech) < np.max(np.abs(clean_speech))*0.03, 0, 1))):
+        if item[0] == 1:
+            # print(clean_speech[start_idx:start_idx+item[1]])
+            new_clean_speech.append(clean_speech[start_idx:start_idx+item[1]])
+            new_processed_speech.append(processed_speech[start_idx:start_idx+item[1]])
+        start_idx += item[1]
+    new_clean_speech = np.concatenate(new_clean_speech)
+    new_processed_speech = np.concatenate(new_processed_speech)
+    new_clean_length = new_clean_speech.shape[0]
+    new_processed_length = new_processed_speech.shape[0]
+    assert new_clean_length == new_processed_length
+    # print('new length:', new_clean_length)
+    # print(np.where(new_clean_speech == 0)[0])     # should return an empty array
+
+    # scale both to have same dynamic range. Remove DC too.
+    dif = ref_wav - deg_wav
+    overall_snr = 10 * np.log10(np.sum(ref_wav ** 2) / (np.sum(dif ** 2) + eps))
+
+    # global variables
+    winlength = int(np.round(win_len * srate / 1000)) # 30 msecs
+    skiprate = winlength // 4
+    # MIN_SNR = -10
+    # MAX_SNR = 35
+
+    # For each frame, calculate SSNR
+
+    num_frames = int(new_clean_length / skiprate - (winlength/skiprate))
+    start = 0
+    time = np.linspace(1, winlength, winlength) / (winlength + 1)
+    window = 0.5 * (1 - np.cos(2 * np.pi * time))
+    segmental_snr = []
+
+    for frame_count in range(int(num_frames)):
+        # (1) get the frames for the test and ref speech.
+        # Apply Hanning Window
+        clean_frame = new_clean_speech[start:start+winlength]
+        processed_frame = new_processed_speech[start:start+winlength]
+        clean_frame = clean_frame * window
+        processed_frame = processed_frame * window
+
+        # (2) Compute Segmental SNR
+        signal_energy = np.sum(clean_frame ** 2)
+        noise_energy = np.sum((clean_frame - processed_frame) ** 2)
+        segmental_snr.append(10 * np.log10(signal_energy / (noise_energy + eps) + 1))
+        segmental_snr[-1] = max(segmental_snr[-1], min_snr)
+        segmental_snr[-1] = min(segmental_snr[-1], max_snr)
+        start += int(skiprate)
+    return np.nanmean(overall_snr), np.nanmean(segmental_snr)
+
+
+def metrics_ssnr_rundi(output, target, sr=16000, frame_len=20, min_snr=-10, max_snr=35, eps=1e-10):
     # Segmental SNR
     # FIXME : linear interpolation may cause misalignment
     lineared = interp1d(np.arange(len(output)), output)
@@ -142,12 +327,12 @@ def metrics_ssnr_obsolete(output, target, sr=16000, frame_len=20):
 
     result = 0
     # regular segments
-    value = 10 * np.log10(np.sum(target_segs ** 2, axis=1) / (np.sum((target_segs - output_segs) ** 2, axis=1) + 1e-10) + 1e-10)
-    result += np.sum(np.clip(value, -10, 35), axis=0)
+    value = 10 * np.log10(np.sum(target_segs ** 2, axis=1) / (np.sum((target_segs - output_segs) ** 2, axis=1) + eps) + eps)
+    result += np.sum(np.clip(value, min_snr, max_snr), axis=0)
 
     # remaining tail
-    value = 10 * np.log(np.sum(target[-remains:] ** 2) / np.sum((target[-remains:] - output[-remains:]) ** 2 + 1e-10) + 1e-10)
-    result += np.clip(value, -10, 35)
+    value = 10 * np.log(np.sum(target[-remains:] ** 2) / np.sum((target[-remains:] - output[-remains:]) ** 2 + eps) + eps)
+    result += np.clip(value, min_snr, max_snr)
 
     result /= (n_segs + 1)
     return result
@@ -158,7 +343,7 @@ def metrics_stoi(output, target, sr=16000, extended=False):
     return stoi(target, output, sr, extended=extended)
 
 
-def CompositeEval(ref_wav, deg_wav, srate=16000):
+def CompositeEval(ref_wav, deg_wav, srate=16000, eps=1e-10):
     # returns [sig, bak, ovl]
     alpha = 0.95
     len_ = min(ref_wav.shape[0], deg_wav.shape[0])
@@ -167,7 +352,7 @@ def CompositeEval(ref_wav, deg_wav, srate=16000):
     deg_wav = deg_wav[:len_]
 
     # Compute WSS measure
-    wss_dist_vec = wss(ref_wav, deg_wav, srate)
+    wss_dist_vec = wss(ref_wav, deg_wav, srate, eps=eps)
     wss_dist_vec = sorted(wss_dist_vec, reverse=False)
     wss_dist = np.nanmean(wss_dist_vec[:int(round(len(wss_dist_vec) * alpha))])
     # print('wss_dist:', wss_dist)
@@ -181,8 +366,11 @@ def CompositeEval(ref_wav, deg_wav, srate=16000):
     # print('llr_mean:', llr_mean)
 
     # Compute the SSNR
-    snr_mean, segsnr_mean = metrics_ssnr(ref_wav, deg_wav, srate)
-    segSNR = np.nanmean(segsnr_mean)
+    # snr_mean, segsnr_mean = metrics_ssnr(ref_wav, deg_wav, win_len=30, srate=srate, eps=eps)
+    # segSNR = np.nanmean(segsnr_mean)
+    # overall_snr = np.nanmean(snr_mean)
+    # overall_snr, segSNR = metrics_ssnr(ref_wav, deg_wav, srate=srate, eps=eps)
+    overall_snr, segSNR = metrics_ssnr(ref_wav, deg_wav, srate=srate, min_snr=0, eps=eps)
     # print('segSNR:', segSNR)
 
     # Compute the PESQ
@@ -210,10 +398,10 @@ def CompositeEval(ref_wav, deg_wav, srate=16000):
     Covl = trim_mos(Covl)
     # print('Covl 2:', Covl)
 
-    return Csig, Cbak, Covl, pesq_raw, segSNR
+    return Csig, Cbak, Covl, pesq_raw, segSNR, overall_snr
 
 
-def wss(ref_wav, deg_wav, srate):
+def wss(ref_wav, deg_wav, srate, eps=1e-10):
     clean_speech = ref_wav
     processed_speech = deg_wav
     clean_length = ref_wav.shape[0]
@@ -296,11 +484,11 @@ def wss(ref_wav, deg_wav, srate):
             processed_energy[i] = np.sum(processed_spec[:n_fftby2] * \
                                          crit_filter[i, :])
         clean_energy = np.array(clean_energy).reshape(-1, 1)
-        eps = np.ones((clean_energy.shape[0], 1)) * 1e-10
-        clean_energy = np.concatenate((clean_energy, eps), axis=1)
+        eps_np = np.ones((clean_energy.shape[0], 1)) * eps
+        clean_energy = np.concatenate((clean_energy, eps_np), axis=1)
         clean_energy = 10 * np.log10(np.max(clean_energy, axis=1))
         processed_energy = np.array(processed_energy).reshape(-1, 1)
-        processed_energy = np.concatenate((processed_energy, eps), axis=1)
+        processed_energy = np.concatenate((processed_energy, eps_np), axis=1)
         processed_energy = 10 * np.log10(np.max(processed_energy, axis=1))
         # (4) Compute Spectral Shape (dB[i+1] - dB[i])
 
@@ -436,7 +624,6 @@ def llr(ref_wav, deg_wav, srate):
 
 #@nb.jit('UniTuple(float32[:], 3)(float32[:])')#,nopython=True)
 def lpcoeff(speech_frame, model_order):
-    
     # (1) Compute Autocor lags
     # max?
     winlength = speech_frame.shape[0]

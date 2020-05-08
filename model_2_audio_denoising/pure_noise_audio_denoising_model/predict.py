@@ -550,7 +550,11 @@ def evaluate(args, data_list_info, save_individual_results=True, save_stat=True)
             avg_cost_cbak = sum([item['cbak'] for item in stat]) / len(stat)
             avg_cost_covl = sum([item['covl'] for item in stat]) / len(stat)
             avg_cost_pesq = sum([item['pesq'] for item in stat]) / len(stat)
-            avg_cost_ssnr = sum([item['ssnr'] for item in stat]) / len(stat)
+            avg_cost_ssnr_regular = sum([item['ssnr_regular'] for item in stat]) / len(stat)
+            avg_cost_ssnr_shift = sum([item['ssnr_shift'] for item in stat]) / len(stat)
+            avg_cost_ssnr_clip = sum([item['ssnr_clip'] for item in stat]) / len(stat)
+            avg_cost_ssnr_exsi = sum([item['ssnr_exsi'] for item in stat]) / len(stat)
+            avg_cost_overall_snr = sum([item['overall_snr'] for item in stat]) / len(stat)
 
             data_info['denoise_statistics'] = OrderedDict([
                 ('avg_l1', avg_cost_l1),
@@ -559,7 +563,11 @@ def evaluate(args, data_list_info, save_individual_results=True, save_stat=True)
                 ('avg_cbak', avg_cost_cbak),
                 ('avg_covl', avg_cost_covl),
                 ('avg_pesq', avg_cost_pesq),
-                ('avg_ssnr', avg_cost_ssnr)
+                ('avg_ssnr_regular', avg_cost_ssnr_regular),
+                ('avg_ssnr_shift', avg_cost_ssnr_shift),
+                ('avg_ssnr_clip', avg_cost_ssnr_clip),
+                ('avg_ssnr_exsi', avg_cost_ssnr_exsi),
+                ('avg_overall_snr', avg_cost_overall_snr)
             ])
 
         data_info['files'] = stat
