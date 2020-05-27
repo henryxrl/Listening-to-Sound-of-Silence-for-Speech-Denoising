@@ -170,7 +170,12 @@ if __name__ == "__main__":
     # LANGUAGES_JSON = os.path.join(DATA_ROOT, 'languages_audioonly.json')
     # build_json_better(LANGUAGES_DIR, LANGUAGES_CSV, LANGUAGES_JSON)
 
-    CE_DIR = os.path.join(DATA_ROOT, 'counterexamples_audioonly')
-    CE_CSV = os.path.join(CE_DIR, 'counterexamples.csv')
-    CE_JSON = os.path.join(DATA_ROOT, 'counterexamples_audioonly.json')
-    build_json_better(CE_DIR, CE_CSV, CE_JSON)
+    # CE_DIR = os.path.join(DATA_ROOT, 'counterexamples_audioonly')
+    # CE_CSV = os.path.join(CE_DIR, 'counterexamples.csv')
+    # CE_JSON = os.path.join(DATA_ROOT, 'counterexamples_audioonly.json')
+    # build_json_better(CE_DIR, CE_CSV, CE_JSON)
+
+    SOS_DIR = os.path.join(DATA_ROOT, 'sounds_of_silence_audioonly_original')
+    SOS_CSV = os.path.join(SOS_DIR, 'sounds_of_silence.csv')
+    SOS_JSON = os.path.join(DATA_ROOT, 'sounds_of_silence.json')
+    build_json_better(SOS_DIR, SOS_CSV, SOS_JSON)

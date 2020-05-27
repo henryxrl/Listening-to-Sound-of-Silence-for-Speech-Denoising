@@ -34,6 +34,7 @@ HENRIQUE_JSON = os.path.join(DATA_ROOT, 'henrique_audioonly.json')
 LANGUAGES_JSON = os.path.join(DATA_ROOT, 'languages_audioonly.json')
 LOOKING_TO_LISTEN_JSON = os.path.join(DATA_ROOT, 'looking_to_listen.json')
 CE_JSON = os.path.join(DATA_ROOT, 'counterexamples_audioonly.json')
+SOUND_OF_SILENCE_JSON = os.path.join(DATA_ROOT, 'sounds_of_silence.json')
 
 
 def prepare_audio_data(args):
@@ -533,7 +534,7 @@ def main():
             # audio_data_json_path = prepare_audio_data(args)
             evaluate(args, save_individual_results=args.save_results, save_noise_info=True, save_stat=True, clean_audio=True)
         else:
-            evaluate(args, save_individual_results=args.save_results, save_noise_info=True, save_stat=True, dataset_json=CE_JSON, clean_audio=False)
+            evaluate(args, save_individual_results=args.save_results, save_noise_info=True, save_stat=True, dataset_json=SOUND_OF_SILENCE_JSON, clean_audio=False)
 
 
 if __name__ == '__main__':
