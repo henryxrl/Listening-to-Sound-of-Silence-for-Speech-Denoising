@@ -1,0 +1,24 @@
+{
+    "dataset_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/real_world_audiovisual/german",
+    "num_videos":1,
+    "files":[
+        {
+            "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/real_world_audiovisual/german/german_0000001.mp4",
+            "clip_start_time":0.0,
+            "clip_end_time":11.44,
+            "face_x":0.5,
+            "face_y":0.5,
+            "framerate":30.0,
+            "audio_sample_rate":44100,
+            "audio_samples":504832,
+            "duration":11.44,
+            "num_frames":343,
+            "bit_stream":"0011111011111100001111111000110000000000111100000111111111111000000000111001111110000011111111111110111100000111011111100111111111101111111111110000111111111100000000011111000111111111111111110101111111111111111111111111000011111010011111110010001111111111101111110011111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "silence_total_ratio":0.24489795918367346,
+            "avg_silenceInterval_silcenceTotal_ratio":0.038461538461538464,
+            "frames_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/real_world_audiovisual/german/german_0000001_faces",
+            "flows_path":null,
+            "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/real_world_audiovisual/german/german_0000001.wav"
+        }
+    ]
+}

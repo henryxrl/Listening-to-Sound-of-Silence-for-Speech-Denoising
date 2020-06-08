@@ -167,7 +167,12 @@ if __name__ == "__main__":
     # LANGUAGES_JSON = os.path.join(DATA_ROOT, 'languages_audiovisual.json')
     # build_json_better(LANGUAGES_DIR, LANGUAGES_CSV, LANGUAGES_JSON)
 
-    CE_DIR = os.path.join(DATA_ROOT, 'counterexamples_audiovisual')
-    CE_CSV = os.path.join(CE_DIR, 'counterexamples.csv')
-    CE_JSON = os.path.join(DATA_ROOT, 'counterexamples_audiovisual.json')
-    build_json_better(CE_DIR, CE_CSV, CE_JSON)
+    # CE_DIR = os.path.join(DATA_ROOT, 'counterexamples_audiovisual')
+    # CE_CSV = os.path.join(CE_DIR, 'counterexamples.csv')
+    # CE_JSON = os.path.join(DATA_ROOT, 'counterexamples_audiovisual.json')
+    # build_json_better(CE_DIR, CE_CSV, CE_JSON)
+
+    RW_DIR = os.path.join(DATA_ROOT, 'real_world_audiovisual')
+    RW_CSV = os.path.join(RW_DIR, 'real_world.csv')
+    RW_JSON = os.path.join(DATA_ROOT, 'real_world_audiovisual.json')
+    build_json_better(RW_DIR, RW_CSV, RW_JSON)

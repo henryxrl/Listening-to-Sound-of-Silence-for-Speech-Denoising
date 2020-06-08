@@ -40,7 +40,8 @@ FIRST_MODEL_OUTPUT_ROOT = os.path.join(PROJECT_ROOT, "../model_1_silent_interval
 # UNKNOWN_CLEAN_SIGNAL_NAME = 'languages_audioonly'
 # UNKNOWN_CLEAN_SIGNAL_NAME = 'looking_to_listen'
 # UNKNOWN_CLEAN_SIGNAL_NAME = 'counterexamples_audioonly'
-UNKNOWN_CLEAN_SIGNAL_NAME = 'sounds_of_silence'
+# UNKNOWN_CLEAN_SIGNAL_NAME = 'sounds_of_silence'
+UNKNOWN_CLEAN_SIGNAL_NAME = 'real_world_audioonly'
 UNKNOWN_CLEAN_SIGNAL_FIRST_MODEL_OUTPUT_ROOT = os.path.join(FIRST_MODEL_OUTPUT_ROOT, UNKNOWN_CLEAN_SIGNAL_NAME)
 
 EXPERIMENT_PREDICTION_OUTPUT_DIR = os.path.join(EXPERIMENT_DIR, 'outputs', FIRST_MODEL_EXP_NAME)
@@ -626,4 +627,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=0 python3 predict.py --ckpt 17 --unknown_clean_signal true
     # CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=0 python3 predict.py --ckpt 24 --unknown_clean_signal true

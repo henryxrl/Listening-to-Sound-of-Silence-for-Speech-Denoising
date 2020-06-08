@@ -1,0 +1,24 @@
+{
+    "dataset_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/real_world_audiovisual/face_mask_112_118",
+    "num_videos":1,
+    "files":[
+        {
+            "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/real_world_audiovisual/face_mask_112_118/face_mask_112_118_0000001.mp4",
+            "clip_start_time":0.0,
+            "clip_end_time":6.139467,
+            "face_x":0.5,
+            "face_y":0.5,
+            "framerate":30.0,
+            "audio_sample_rate":44100,
+            "audio_samples":269312,
+            "duration":6.139467,
+            "num_frames":184,
+            "bit_stream":"0111111111111111111111111111111111111111111111111111111111111111111111111110000111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "silence_total_ratio":0.02717391304347826,
+            "avg_silenceInterval_silcenceTotal_ratio":0.5,
+            "frames_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/real_world_audiovisual/face_mask_112_118/face_mask_112_118_0000001_faces",
+            "flows_path":null,
+            "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/real_world_audiovisual/face_mask_112_118/face_mask_112_118_0000001.wav"
+        }
+    ]
+}

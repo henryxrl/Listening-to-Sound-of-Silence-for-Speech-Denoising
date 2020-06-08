@@ -1,6 +1,6 @@
 {
     "dataset_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly",
-    "num_videos":3,
+    "num_videos":7,
     "files":[
         {
             "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/chinese/chinese_0000001.wav",
@@ -19,6 +19,42 @@
             "frames_path":null,
             "flows_path":null,
             "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/chinese/chinese_0000001.wav"
+        },
+        {
+            "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/french/french_0000001.wav",
+            "clip_start_time":0,
+            "clip_end_time":9.566621,
+            "face_x":0,
+            "face_y":0,
+            "framerate":30,
+            "audio_sample_rate":44100,
+            "audio_samples":421888,
+            "duration":9.566621,
+            "num_frames":287,
+            "bit_stream":"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "silence_total_ratio":0,
+            "avg_silenceInterval_silcenceTotal_ratio":0,
+            "frames_path":null,
+            "flows_path":null,
+            "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/french/french_0000001.wav"
+        },
+        {
+            "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/german/german_0000001.wav",
+            "clip_start_time":0,
+            "clip_end_time":11.447438,
+            "face_x":0,
+            "face_y":0,
+            "framerate":30,
+            "audio_sample_rate":44100,
+            "audio_samples":504832,
+            "duration":11.447438,
+            "num_frames":344,
+            "bit_stream":"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "silence_total_ratio":0,
+            "avg_silenceInterval_silcenceTotal_ratio":0,
+            "frames_path":null,
+            "flows_path":null,
+            "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/german/german_0000001.wav"
         },
         {
             "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/japanese/japanese_0000001.wav",
@@ -55,6 +91,42 @@
             "frames_path":null,
             "flows_path":null,
             "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/korean/korean_0000001.wav"
+        },
+        {
+            "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/spanish_1/spanish_1_0000001.wav",
+            "clip_start_time":0,
+            "clip_end_time":9.775601,
+            "face_x":0,
+            "face_y":0,
+            "framerate":30,
+            "audio_sample_rate":44100,
+            "audio_samples":431104,
+            "duration":9.775601,
+            "num_frames":294,
+            "bit_stream":"111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "silence_total_ratio":0,
+            "avg_silenceInterval_silcenceTotal_ratio":0,
+            "frames_path":null,
+            "flows_path":null,
+            "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/spanish_1/spanish_1_0000001.wav"
+        },
+        {
+            "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/spanish_2/spanish_2_0000001.wav",
+            "clip_start_time":0,
+            "clip_end_time":8.103764,
+            "face_x":0,
+            "face_y":0,
+            "framerate":30,
+            "audio_sample_rate":44100,
+            "audio_samples":357376,
+            "duration":8.103764,
+            "num_frames":244,
+            "bit_stream":"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "silence_total_ratio":0,
+            "avg_silenceInterval_silcenceTotal_ratio":0,
+            "frames_path":null,
+            "flows_path":null,
+            "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/spanish_2/spanish_2_0000001.wav"
         }
     ]
 }

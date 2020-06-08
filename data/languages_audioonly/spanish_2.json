@@ -1,0 +1,24 @@
+{
+    "dataset_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/spanish_2",
+    "num_videos":1,
+    "files":[
+        {
+            "path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/spanish_2/spanish_2_0000001.wav",
+            "clip_start_time":0,
+            "clip_end_time":8.103764,
+            "face_x":0,
+            "face_y":0,
+            "framerate":30,
+            "audio_sample_rate":44100,
+            "audio_samples":357376,
+            "duration":8.103764,
+            "num_frames":244,
+            "bit_stream":"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "silence_total_ratio":0,
+            "avg_silenceInterval_silcenceTotal_ratio":0,
+            "frames_path":null,
+            "flows_path":null,
+            "audio_path":"/proj/vondrick/rx2132/audio_visual_denoising_official/data/languages_audioonly/spanish_2/spanish_2_0000001.wav"
+        }
+    ]
+}
