@@ -30,90 +30,9 @@ from utils import ensure_dir, get_parent_dir
 SIGMOID_THRESHOLD = 0.5
 EXPERIMENT_PREDICTION_OUTPUT_DIR = os.path.join(EXPERIMENT_DIR, 'outputs')
 
-HENRIQUE_JSON = os.path.join(DATA_ROOT, 'henrique_audioonly.json')
-LANGUAGES_JSON = os.path.join(DATA_ROOT, 'languages_audioonly.json')
-LOOKING_TO_LISTEN_JSON = os.path.join(DATA_ROOT, 'looking_to_listen.json')
-CE_JSON = os.path.join(DATA_ROOT, 'counterexamples_audioonly.json')
 SOUND_OF_SILENCE_JSON = os.path.join(DATA_ROOT, 'sounds_of_silence.json')
-REAL_WORLD_JSON = os.path.join(DATA_ROOT, 'real_world_audioonly.json')
-
-# EXTERNAL_DATASET_JSON = SOUND_OF_SILENCE_JSON
-# EXTERNAL_DATASET_JSON = LANGUAGES_JSON
-EXTERNAL_DATASET_JSON = REAL_WORLD_JSON
-
-
-def prepare_audio_data(args):
-    random.seed(RANDOM_SEED)
-
-    # read in prediction data
-    data_json = os.path.join(DATA_ROOT, PHASE_PREDICTION + JSON_PARTIAL_NAME)
-    print('Prediction data json:', data_json)
-    with open(data_json, 'r') as fp:
-        info = json.load(fp)
-        dataset_path = info['dataset_path']
-        num_videos = info['num_videos']
-        files = info['files']
-
-    # preparation for saving the clean, noise, mixed audios
-    suffix = convert_snr_to_suffix(SNRS, args.snr_idx)
-    noise_dir = os.path.join(os.path.abspath(args.outputs), 'noise'+suffix)
-    ensure_dir(noise_dir)
-    noise_infos = OrderedDict([
-        ('dataset_path', dataset_path),
-        ('num_videos', num_videos),
-        ('snrs', SNRS)
-    ])
-    noise_files = []
-
-    # process data
-    for file in tqdm(files):
-        # print('\nfile:', os.path.basename(file['audio_path']))
-        # print('duration:', file['duration'])
-        audio = librosa.load(file['audio_path'], sr=DATA_REQUIRED_SR)[0]
-        # print('audio shape:', audio.shape)
-
-        chosen_files = random_select_data_as_noise_for_pred(file, files)
-        noise = np.zeros_like(chosen_files)
-        # print('number noises:', len(chosen_files))
-        for idx, chosen_file in enumerate(chosen_files):
-            # print('noise:', chosen_file['audio_path'])
-            # print('duration:', chosen_file['duration'])
-            noise[idx] = librosa.load(chosen_file['audio_path'], sr=DATA_REQUIRED_SR)[0]
-            # print(noise[idx].shape)
-        noise = np.hstack(noise)[:len(audio)]   # truncate noise
-        # print('noise shape:', noise.shape)
-
-        audio_mixed, audio_clean, audio_noise = add_noise_to_audio(audio, noise, snr=SNRS[args.snr_idx], norm=0.5)
-
-        # save clean
-        corr_video = os.path.basename(file['path'])
-        clean_name = corr_video.split('.mp4')[0] + '_clean.wav'
-        clean_path = os.path.join(noise_dir, clean_name)
-        librosa.output.write_wav(clean_path, audio_clean, DATA_REQUIRED_SR)
-        # save noise
-        noise_name = corr_video.split('.mp4')[0] + '_noise.wav'
-        noise_path = os.path.join(noise_dir, noise_name)
-        librosa.output.write_wav(noise_path, audio_noise[0], DATA_REQUIRED_SR)
-        # save mixed
-        mixed_name = corr_video.split('.mp4')[0] + '_mixed.wav'
-        mixed_path = os.path.join(noise_dir, mixed_name)
-        librosa.output.write_wav(mixed_path, audio_mixed, DATA_REQUIRED_SR)
-
-        noise_files.append(copy.deepcopy(file))
-        noise_files[-1]['audio_path'] = mixed_path
-        noise_files[-1].update(OrderedDict([
-            ('clean', clean_name),
-            ('noise', noise_name),
-            ('mixed', mixed_name),
-            ('snr', SNRS[args.snr_idx])
-        ]))
-
-    noise_infos['files'] = noise_files
-    noise_json_path = os.path.join(noise_dir, suffix[1:]+'.json')
-    with open(noise_json_path, 'w') as fpnoise:
-        json.dump(noise_infos, fpnoise, **JSON_DUMP_PARAMS)
-    print('Noise info saved to: \'{}\''.format(noise_json_path))
-    return noise_json_path
+TIMIT_JSON = '/proj/vondrick/rx2132/test_noise_robust_embedding/data/TIMIT/TEST_noisy_snr10.json'
+EXTERNAL_DATASET_JSON = TIMIT_JSON
 
 
 def evaluate(args, save_individual_results=True, save_noise_info=True, save_stat=True, dataset_json=None, clean_audio=True):
@@ -510,6 +429,8 @@ def main():
     # print(args)
 
     if not args.eval:
+        # OBSOLETE - This was used to test single data;
+        # Please use the "eval" mode instead, which is default to be turned ON
         data_json = os.path.join(DATA_ROOT, PHASE_PREDICTION + JSON_PARTIAL_NAME)
         print('Prediction data json:', data_json)
         with open(data_json, 'r') as fp:
@@ -518,8 +439,6 @@ def main():
         FILES = info['files']
 
         global ALL_CHOICES
-        # ALL_CHOICES = bit_stream_indices_list(FILES, CLIP_FRAMES)
-        # ALL_CHOICES = info['choices']
         ALL_CHOICES = create_sample_list_from_indices(info['files'], clip_frames=CLIP_FRAMES, silent_consecutive_frames=SILENT_CONSECUTIVE_FRAMES, random_seed=RANDOM_SEED, pred=True)
 
         # check number of 0/1 samples
@@ -536,7 +455,6 @@ def main():
         run(args, data_list)
     else:
         if not args.unknown_clean_signal:
-            # audio_data_json_path = prepare_audio_data(args)
             evaluate(args, save_individual_results=args.save_results, save_noise_info=True, save_stat=True, clean_audio=True)
         else:
             evaluate(args, save_individual_results=args.save_results, save_noise_info=True, save_stat=True, dataset_json=EXTERNAL_DATASET_JSON, clean_audio=False)

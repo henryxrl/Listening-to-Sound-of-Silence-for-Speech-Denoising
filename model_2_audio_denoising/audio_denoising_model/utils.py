@@ -1,8 +1,8 @@
-import csv
+import os
 import json
 import logging
-import os
 import shutil
+import csv
 
 
 class TrainClock(object):
@@ -92,10 +92,7 @@ class AverageMeter(object):
 
     def __init__(self, name):
         self.name = name
-        self.val = 0
-        self.avg = 0
-        self.sum = 0
-        self.count = 0
+        self.reset()
 
     def reset(self):
         self.val = 0
@@ -159,11 +156,6 @@ def get_parent_dir(path):
 def get_path_same_dir(path, new_file_name):
     """Get the absolute path of a new file that is in the same directory as another file"""
     return os.path.join(get_parent_dir(path), new_file_name)
-
-
-def get_basename_no_ext(path):
-    """Get the basename of a file without the extension"""
-    return os.path.splitext(os.path.basename(path))[0]
 
 
 def cycle(iterable):

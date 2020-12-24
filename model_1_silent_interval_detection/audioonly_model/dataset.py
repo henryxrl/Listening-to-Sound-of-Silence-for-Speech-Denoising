@@ -17,6 +17,7 @@ import pylab
 import torch
 from torch.utils.data import DataLoader, Dataset
 from torch.utils.data.sampler import WeightedRandomSampler
+from joblib import Parallel, delayed
 
 from common import EXPERIMENT_NAME, PROJECT_ROOT, PHASE_TESTING, PHASE_TRAINING, PHASE_PREDICTION
 from tools import *
@@ -120,14 +121,16 @@ class AudioVisualAVSpeechMultipleVideoDataset(Dataset):
             # print(self.noise_src)
 
             print('Loading all noise files...')
-            self.noises = [i[0] for i in (librosa.load(n, sr=DATA_REQUIRED_SR) for n in tqdm(self.noise_src))]
+            # self.noises = [i[0] for i in (librosa.load(n, sr=DATA_REQUIRED_SR) for n in tqdm(self.noise_src))]
+            self.noises = Parallel(n_jobs=-1, backend="multiprocessing")\
+                (delayed(load_wav)(n, sr=DATA_REQUIRED_SR) for n in tqdm(self.noise_src))
             # print(len(self.noises))
             self.noise_dict = {}
             if phase == PHASE_PREDICTION:
                 random.seed(PRED_RANDOM_SEED)
                 for f_idx, file in enumerate(self.files):
-                    selected_noise = random.choice(self.noises)
-                    # selected_noise = random_select_noises_for_pred(file, self.noises)
+                    # selected_noise = random.choice(self.noises)
+                    selected_noise = random_select_noises_for_pred(file, self.noises)
                     # selected_noise = self.noises[f_idx]
                     # print(os.path.basename(self.noise_src[f_idx]))
                     # print(os.path.basename(file['path']))
@@ -184,7 +187,8 @@ class AudioVisualAVSpeechMultipleVideoDataset(Dataset):
         # file_info_dict['path']
         # file_info_dict['num_frames']
         # file_info_dict['bit_stream']
-        assert item[1]+self.clip_frames <= int(file_info_dict['num_frames'])
+        if self.phase != PHASE_PREDICTION:
+            assert item[1]+self.clip_frames <= int(file_info_dict['num_frames'])
         # print(index, item[1], file_info_dict['num_frames'])
 
         try:

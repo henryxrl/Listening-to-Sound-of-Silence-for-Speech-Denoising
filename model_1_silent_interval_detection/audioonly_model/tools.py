@@ -577,37 +577,23 @@ class WeightedBCE():
         return loss
 
 
-def plot_wav(snd, sr, plot_path=None, lims=None, downsample=False, overlay_mode=False, suppress_stdout=False):
+def plot_wav(snd, sr, downsample=False, plot_path=None, suppress_stdout=False):
     """Draw waveform plot"""
     mpl.rcParams['agg.path.chunksize'] = PLOT_CHUNKSIZE
-    plt.figure(figsize=(PLOT_W, PLOT_H), dpi=PLOT_DPI)
+    fig = plt.figure(figsize=(PLOT_W, PLOT_H), dpi=PLOT_DPI)
+    fig.subplots_adjust(wspace=None, hspace=None)
+    ax = fig.add_subplot(111)
+    ax.set_ylim(Y_LIM_B, Y_LIM_T)
+
+     # draw waveform
     if downsample:
-        librosa.display.waveplot(snd, sr=sr, max_sr=100)
+        librosa.display.waveplot(snd, sr=sr, max_sr=100, ax=ax)
     else:
-        librosa.display.waveplot(snd)
-    plt.ylim(Y_LIM_B, Y_LIM_T)
-    if lims is not None:
-        plt.xlim(left=lims[0], right=lims[1])
-        plt.ylim(bottom=lims[2], top=lims[3])
-        # print(lims)
+        librosa.display.waveplot(snd, sr=sr, ax=ax)
     # plt.show()
+    # print(plt.gca().get_xlim(), plt.gca().get_ylim())
 
-    if overlay_mode:
-        plt.axis('off')
-        plt.tick_params(
-            axis='both',
-            which='both',
-            left='off',
-            top='off',
-            right='off',
-            bottom='off',
-            labelleft='off',
-            labeltop='off',
-            labelright='off',
-            labelbottom='off'
-        )
-
-    toreturn = plt.gca().get_xlim() + plt.gca().get_ylim()
+    # save plot
     if plot_path is not None:
         plt.savefig(plot_path)
 
@@ -616,95 +602,82 @@ def plot_wav(snd, sr, plot_path=None, lims=None, downsample=False, overlay_mode=
     if not suppress_stdout:
         print('Waveform plot complete.')
 
-    return toreturn
 
-
-def plot_bitstream(bit_stream, plot_path=None, overlay_mode=False, suppress_stdout=False):
-    """Draw bitstream"""
+def plot_wav_bitstream_overlay(bit_stream, snd, sr, downsample=False, plot_path=None, suppress_stdout=False):
+    """Draw waveform and bitstream plots overlay"""
     mpl.rcParams['agg.path.chunksize'] = PLOT_CHUNKSIZE
-    y = [int(s) for s in bit_stream]
-    # print y
-    x = [i for i in range(len(y)+1)]
-    # print x
-
     fig = plt.figure(figsize=(PLOT_W, PLOT_H), dpi=PLOT_DPI)
     fig.subplots_adjust(wspace=None, hspace=None)
-    
-    # plt.plot(x, y, label='bit stream', color="#FF7043")
+    ax = fig.add_subplot(111)
+    ax.set_ylim(Y_LIM_B, Y_LIM_T)
+
+    # draw waveform
+    if downsample:
+        librosa.display.waveplot(snd, sr=sr, max_sr=100, ax=ax)
+    else:
+        librosa.display.waveplot(snd, sr=sr, ax=ax)
+    # plt.show()
+    # print(plt.gca().get_xlim(), plt.gca().get_ylim())
+
+    # draw bitstream
     # Highlight silent intervals
-    from itertools import groupby
+    # from itertools import groupby
+    fps_factor = float(len(bit_stream) / plt.gca().get_xlim()[1])
     start_idx = 0
-    for item in ((k, len(list(g))) for k, g in groupby(y)):
+    for item in ((k, len(list(g))) for k, g in groupby([int(s) for s in bit_stream])):
         if item[0] == 0:    # highlight silent intervals
-            plt.axvspan(start_idx, start_idx+item[1], color='#FF7043', alpha=0.7)
+            ax.axvspan(start_idx/fps_factor, (start_idx+item[1])/fps_factor, color='#FF7043', alpha=0.35)
         elif item[0] == 2:   # highlight excluded intervals
-            plt.axvspan(start_idx, start_idx+item[1], color='#78909C', alpha=0.7)
+            ax.axvspan(start_idx/fps_factor, (start_idx+item[1])/fps_factor, color='#78909C', alpha=0.35)
         start_idx += item[1]
 
-    if overlay_mode:
-        plt.tick_params(
-            axis='y',
-            which='both',
-            # left=False,
-            right=False,
-            # labelleft=False,
-            labelright=False
-        )
-
-    plt.xlabel('Frames')
-    plt.xlim(left=min(x), right=max(x))
-    plt.ylim(Y_LIM_B, Y_LIM_T)
-    # plt.show()
-
+    # save plot
     if plot_path is not None:
         plt.savefig(plot_path)
 
     plt.close('all')
 
     if not suppress_stdout:
-        print('Bitstream plot complete.')
+        print('Waveform bistream overlay plot complete.')
 
 
-def plot_floatstreams(float_streams, labels=None, plot_path=None, overlay_mode=False, suppress_stdout=False):
-    """Draw float stream curves"""
-    mpl.rcParams['agg.path.chunksize'] = PLOT_CHUNKSIZE
-
+def plot_wav_floatstreams_overlay(float_streams, snd, sr, downsample=False, labels=None, plot_path=None, suppress_stdout=False):
     if not isinstance(float_streams, np.ndarray):
         raise Exception('Wrong input type')
 
     if float_streams.ndim != 2:
         raise Exception('Wrong input dims')
 
+    """Draw waveform and bitstream plots overlay"""
+    mpl.rcParams['agg.path.chunksize'] = PLOT_CHUNKSIZE
     fig = plt.figure(figsize=(PLOT_W, PLOT_H), dpi=PLOT_DPI)
     fig.subplots_adjust(wspace=None, hspace=None)
+    ax = fig.add_subplot(111)
+    ax.set_ylim(Y_LIM_B, Y_LIM_T)
 
+    # draw waveform
+    if downsample:
+        librosa.display.waveplot(snd, sr=sr, max_sr=100, ax=ax)
+    else:
+        librosa.display.waveplot(snd, sr=sr, ax=ax)
+    # plt.show()
+    # print(plt.gca().get_xlim(), plt.gca().get_ylim())
+
+    # draw floatstreams
     if labels is not None:
         assert len(labels) == float_streams.shape[0]
 
     x = [i for i in range(len(float_streams[0]))]
     for i in range(float_streams.shape[0]):
         y = list(float_streams[i])
-
         plt.plot(x, y, linewidth=5, marker="o", label=labels[i])
 
     # Put a legend below current axis
     plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=5, fontsize=27)
-
     plt.gca().set_axisbelow(True)
     plt.grid(True)
     # plt.tight_layout()
 
-    if overlay_mode:
-        plt.tick_params(
-            axis='y',
-            which='both',
-            # left=False,
-            right=False,
-            # labelleft=False,
-            labelright=False
-        )
-
-    plt.xlabel('Frames')
     minx = min(x)
     maxx = max(x)
     plt.xlim(left=minx, right=maxx)
@@ -713,24 +686,18 @@ def plot_floatstreams(float_streams, labels=None, plot_path=None, overlay_mode=F
     maxy = max(abs(miny), abs(maxy))
     miny = maxy * -1
     plt.ylim(bottom=miny, top=maxy)
-    # plt.ylim(Y_LIM_B, Y_LIM_T)
-    # plt.show()
 
+    # save plot
     if plot_path is not None:
         plt.savefig(plot_path)
 
     plt.close('all')
 
     if not suppress_stdout:
-        print('Float stream plot complete.')
-
-    return [minx, maxx, miny, maxy]
+        print('Waveform bistream overlay plot complete.')
 
 
-def plot_bitstream_floatstreams(bit_stream, float_streams, labels=None, plot_path=None, overlay_mode=False, suppress_stdout=False):
-    """Draw bitstream and float stream curves"""
-    mpl.rcParams['agg.path.chunksize'] = PLOT_CHUNKSIZE
-
+def plot_wav_bitstream_floatstreams_overlay(bit_stream, float_streams, snd, sr, downsample=False, labels=None, plot_path=None, suppress_stdout=False):
     if not isinstance(float_streams, np.ndarray):
         raise Exception('Wrong input type')
 
@@ -739,148 +706,65 @@ def plot_bitstream_floatstreams(bit_stream, float_streams, labels=None, plot_pat
 
     assert len(bit_stream) == len(float_streams[0])
 
+    """Draw waveform and bitstream plots overlay"""
+    mpl.rcParams['agg.path.chunksize'] = PLOT_CHUNKSIZE
     fig = plt.figure(figsize=(PLOT_W, PLOT_H), dpi=PLOT_DPI)
     fig.subplots_adjust(wspace=None, hspace=None)
+    ax = fig.add_subplot(111)
+    ax.set_ylim(Y_LIM_B, Y_LIM_T)
 
-    # Draw bit stream
-    y = [int(s) for s in bit_stream]
-    x = [i for i in range(len(y)+1)]
-    
+    # draw waveform
+    if downsample:
+        librosa.display.waveplot(snd, sr=sr, max_sr=100, ax=ax)
+    else:
+        librosa.display.waveplot(snd, sr=sr, ax=ax)
+    # plt.show()
+    # print(plt.gca().get_xlim(), plt.gca().get_ylim())
+
+    # draw bitstream
     # Highlight silent intervals
-    from itertools import groupby
+    # from itertools import groupby
+    fps_factor = float(len(bit_stream) / plt.gca().get_xlim()[1])
     start_idx = 0
-    for item in ((k, len(list(g))) for k, g in groupby(y)):
+    for item in ((k, len(list(g))) for k, g in groupby([int(s) for s in bit_stream])):
         if item[0] == 0:    # highlight silent intervals
-            plt.axvspan(start_idx, start_idx+item[1], color='#FF7043', alpha=0.7)
+            ax.axvspan(start_idx/fps_factor, (start_idx+item[1])/fps_factor, color='#FF7043', alpha=0.35)
         elif item[0] == 2:   # highlight excluded intervals
-            plt.axvspan(start_idx, start_idx+item[1], color='#78909C', alpha=0.7)
+            ax.axvspan(start_idx/fps_factor, (start_idx+item[1])/fps_factor, color='#78909C', alpha=0.35)
         start_idx += item[1]
 
-    # Draw float streams
-    if labels != None:
+    # draw floatstreams
+    if labels is not None:
         assert len(labels) == float_streams.shape[0]
 
     x = [i for i in range(len(float_streams[0]))]
     for i in range(float_streams.shape[0]):
         y = list(float_streams[i])
-        
-        plt.plot(x, y, linewidth=2, label=labels[i])
+        plt.plot(x, y, linewidth=5, marker="o", label=labels[i])
 
     # Put a legend below current axis
     plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=5, fontsize=27)
-    
     plt.gca().set_axisbelow(True)
     plt.grid(True)
+    # plt.tight_layout()
 
-    if overlay_mode:
-        plt.tick_params(
-            axis='y',
-            which='both',
-            # left=False,
-            right=False,
-            # labelleft=False,
-            labelright=False
-        )
+    minx = min(x)
+    maxx = max(x)
+    plt.xlim(left=minx, right=maxx)
+    miny = np.amin(float_streams) * 1.1
+    maxy = np.amax(float_streams) * 1.1
+    maxy = max(abs(miny), abs(maxy))
+    miny = maxy * -1
+    plt.ylim(bottom=miny, top=maxy)
 
-    plt.xlabel('Frames')
-    plt.xlim(left=min(x), right=max(x))
-    plt.ylim(Y_LIM_B, Y_LIM_T)
-    # plt.show()
-
+    # save plot
     if plot_path is not None:
         plt.savefig(plot_path)
 
     plt.close('all')
 
     if not suppress_stdout:
-        print('Plot complete.')
-
-
-def plot_wav_bitstream_overlay(snd, sr, bit_stream, plot_path=None, suppress_stdout=False):
-    """Draw waveform and bitstream together"""
-    with tempfile.TemporaryDirectory() as temp_dir:
-        wav_path = os.path.join(temp_dir, 'wav.png')
-        limits = plot_wav(snd, sr, plot_path=wav_path, overlay_mode=True, suppress_stdout=True)
-        bit_path = os.path.join(temp_dir, 'bit.png')
-        plot_bitstream(bit_stream, bit_path, overlay_mode=True, suppress_stdout=True)
-
-        overlay = Image.open(bit_path)
-        background = Image.open(wav_path)
-
-        overlay = overlay.convert("RGBA")
-        background = background.convert("RGBA")
-
-        new_img = Image.blend(background, overlay, 0.65)
-        # plt.imshow(new_img)
-
-        if plot_path is not None:
-            new_img.save(plot_path, "PNG")
-
-        overlay.close()
-        background.close()
-        new_img.close()
-
-        if not suppress_stdout:
-            print('Overlay plot complete.')
-
-
-def plot_wav_floatstreams_overlay(snd, sr, float_streams, labels=None, plot_path=None, suppress_stdout=False):
-    """Draw waveform and float streams together"""
-    with tempfile.TemporaryDirectory() as temp_dir:
-        bit_path = os.path.join(temp_dir, 'bit.png')
-        limits = plot_floatstreams(float_streams, labels=labels, plot_path=bit_path, overlay_mode=True, suppress_stdout=True)
-        # print('float streams:', float_streams)
-        limits[1] /= 30     # assume 30 frames per second
-
-        wav_path = os.path.join(temp_dir, 'wav.png')
-        plot_wav(snd, sr, plot_path=wav_path, overlay_mode=True, lims=None, suppress_stdout=True)
-
-        overlay = Image.open(bit_path)
-        background = Image.open(wav_path)
-
-        overlay = overlay.convert("RGBA")
-        background = background.convert("RGBA")
-
-        new_img = Image.blend(background, overlay, 0.65)
-        # plt.imshow(new_img)
-
-        if plot_path is not None:
-            new_img.save(plot_path, "PNG")
-
-        overlay.close()
-        background.close()
-        new_img.close()
-
-        if not suppress_stdout:
-            print('Overlay plot complete.')
-
-
-def plot_wav_bitstream_floatstreams_overlay(snd, sr, bit_stream, float_streams, fs_labels=None, plot_path=None, suppress_stdout=False):
-    """Draw waveform and float streams together"""
-    with tempfile.TemporaryDirectory() as temp_dir:
-        wav_path = os.path.join(temp_dir, 'wav.png')
-        plot_wav(snd, sr, plot_path=wav_path, overlay_mode=True, suppress_stdout=True)
-        float_path = os.path.join(temp_dir, 'float.png')
-        plot_bitstream_floatstreams(bit_stream, float_streams, labels=fs_labels, plot_path=float_path, overlay_mode=True, suppress_stdout=True)
-
-        overlay = Image.open(float_path)
-        background = Image.open(wav_path)
-
-        overlay = overlay.convert("RGBA")
-        background = background.convert("RGBA")
-
-        new_img = Image.blend(background, overlay, 0.65)
-        # plt.imshow(new_img)
-
-        if plot_path is not None:
-            new_img.save(plot_path, "PNG")
-
-        overlay.close()
-        background.close()
-        new_img.close()
-
-        if not suppress_stdout:
-            print('Overlay plot complete.')
+        print('Waveform bistream overlay plot complete.')
 
 
 def convert_bitstreammask_to_audiomask(ref_audio_signal, frames_to_audiosample_ratio, bitstream):
@@ -909,6 +793,10 @@ def convert_bitstreammask_to_audiomask(ref_audio_signal, frames_to_audiosample_r
 
 
 ### AUDIO PROCESSING ###
+def load_wav(path, sr):
+    return librosa.load(path, sr=sr)[0]
+
+
 def power_of_signal(signal):
     return np.sum(np.abs(signal ** 2))
 
@@ -995,6 +883,7 @@ def convert_snr_to_suffix2(snr):
     result = ""
     if snr is not None:
         try:
+            snr = float(snr)
             snr = int(snr) if snr.is_integer() else float(snr)
             result = '_snr' + str(snr).replace('.', '_')
         except:
@@ -1071,6 +960,7 @@ def random_select_noises_for_pred(cur_file, noises, random_seed=None):
     chosen = random.choice(noises)
     # i = np.random.randint(0, len(noises))  # faster?
     # chosen = noises[i]
+    results.append(chosen)
 
     remaining_duration = cur_file['audio_samples'] - len(chosen)
     while remaining_duration > -1:  # just to be safe

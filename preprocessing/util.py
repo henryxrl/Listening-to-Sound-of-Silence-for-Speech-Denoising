@@ -21,8 +21,8 @@ from PIL import Image
 from pytube import YouTube
 from scipy import ndimage
 
-from flow_extractor import convert_flow, extract_flow
-from face_extractor import extract_all_faces, get_initial_bb, get_time_series
+# from flow_extractor import convert_flow, extract_flow
+# from face_extractor import extract_all_faces, get_initial_bb, get_time_series
 from tools import *
 
 mpl.use('Agg')
@@ -483,7 +483,7 @@ def plot_wav_bitstream_overlay(snd, sr, bit_stream, plot_path=None, suppress_std
         if not suppress_stdout:
             print('Overlay plot complete.')
 
-
+'''
 def get_bitstream(file_info_dict, begin_padding=VIDEO_BEGIN_PADDING, end_padding=VIDEO_END_PADDING, overwrite=False, suppress_stdout=True):
     """Get the bitstream of a video,  representing its silent/non-silent intervals; 0: silent; 1: non-silent"""
     if not suppress_stdout:
@@ -896,3 +896,4 @@ class VideoFramesAudio:
 
     def __exit__(self, type, value, tb):
         shutil.rmtree(self.temp_dir)
+'''

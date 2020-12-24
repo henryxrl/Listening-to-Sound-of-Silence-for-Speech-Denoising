@@ -1,5 +1,6 @@
 import json
 import os
+from tqdm import tqdm
 import shutil
 from collections import OrderedDict
 from pathlib import Path
@@ -159,28 +160,29 @@ def build_json_better(download_dataset_dir, download_dataset_csv, output_json, f
     return total_failed
 
 
+def build_csv(download_dataset_dir, output_csv, ext=AUDIO_EXT):
+    with open(output_csv, 'w') as f:
+        for path in Path(download_dataset_dir).rglob('*'+ext):
+            f.write(str(path.stem) + '\n')
+    print('DONE')
+
+
 if __name__ == "__main__":
-    # HENRIQUE_DIR = os.path.join(DATA_ROOT, 'henrique_audioonly')
-    # HENRIQUE_CSV = os.path.join(HENRIQUE_DIR, 'henrique.csv')
-    # HENRIQUE_JSON = os.path.join(DATA_ROOT, 'henrique_audioonly.json')
-    # build_json_better(HENRIQUE_DIR, HENRIQUE_CSV, HENRIQUE_JSON)
-
-    # LANGUAGES_DIR = os.path.join(DATA_ROOT, 'languages_audioonly')
-    # LANGUAGES_CSV = os.path.join(LANGUAGES_DIR, 'languages.csv')
-    # LANGUAGES_JSON = os.path.join(DATA_ROOT, 'languages_audioonly.json')
-    # build_json_better(LANGUAGES_DIR, LANGUAGES_CSV, LANGUAGES_JSON)
-
-    # CE_DIR = os.path.join(DATA_ROOT, 'counterexamples_audioonly')
-    # CE_CSV = os.path.join(CE_DIR, 'counterexamples.csv')
-    # CE_JSON = os.path.join(DATA_ROOT, 'counterexamples_audioonly.json')
-    # build_json_better(CE_DIR, CE_CSV, CE_JSON)
-
     # SOS_DIR = os.path.join(DATA_ROOT, 'sounds_of_silence_audioonly')
     # SOS_CSV = os.path.join(SOS_DIR, 'sounds_of_silence.csv')
     # SOS_JSON = os.path.join(DATA_ROOT, 'sounds_of_silence.json')
     # build_json_better(SOS_DIR, SOS_CSV, SOS_JSON)
 
-    RW_DIR = os.path.join(DATA_ROOT, 'real_world_audioonly')
-    RW_CSV = os.path.join(RW_DIR, 'real_world.csv')
-    RW_JSON = os.path.join(DATA_ROOT, 'real_world_audioonly.json')
-    build_json_better(RW_DIR, RW_CSV, RW_JSON)
+    # DIR = '/proj/vondrick/rx2132/test_noise_robust_embedding/data/TIMIT/TEST_noisy'
+    # CSV = '/proj/vondrick/rx2132/test_noise_robust_embedding/data/TIMIT/TEST_noisy/TEST_noisy.csv'
+    # # build_csv(DIR, CSV, ext='.WAV')
+    # JSON = '/proj/vondrick/rx2132/test_noise_robust_embedding/data/TIMIT/TEST_noisy.json'
+    # build_json_better(DIR, CSV, JSON, ext='.WAV')
+
+    SNR = [-10, -7, -3, 0, 3, 7, 10]
+    for snr in tqdm(SNR):
+        DIR = '/proj/vondrick/rx2132/test_noise_robust_embedding/data/TIMIT/TEST_noisy_snr' + str(int(snr))
+        CSV = '/proj/vondrick/rx2132/test_noise_robust_embedding/data/TIMIT/TEST_noisy_snr' + str(int(snr)) + '/TEST_noisy_snr' + str(int(snr)) + '.csv'
+        build_csv(DIR, CSV, ext='.WAV')
+        JSON = '/proj/vondrick/rx2132/test_noise_robust_embedding/data/TIMIT/TEST_noisy_snr' + str(int(snr)) + '.json'
+        build_json_better(DIR, CSV, JSON, ext='.WAV')
