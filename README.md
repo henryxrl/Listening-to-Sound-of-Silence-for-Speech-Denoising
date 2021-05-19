@@ -64,6 +64,10 @@ python preprocessing/preprocessor_audioonly.py
 
 ## Inference
 
+### Pretrained weights
+
+You can download the pretrained weights from authors [here](http://www.cs.columbia.edu/cg/listen_to_the_silence/pretrained/pretrained.zip).
+
 ### Step 1
 
 1. Go to `model_1_silent_interval_detection` directory
